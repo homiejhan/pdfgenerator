@@ -1,5 +1,7 @@
 # Worksheet Studio
 
+Webpage: https://homiejhan.github.io/pdfgenerator/
+
 A fully offline, single-purpose web app that turns plain text — the kind you'd
 paste straight out of a Claude (or any LLM) response — into a typeset,
 paginated PDF worksheet with an answer key. No server, no build step, no
