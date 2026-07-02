@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Worksheet Studio</title>
+<!-- Fully local static app: no network access required.
+     css/styles.css   presentation (all layout, paper, and UI styling)
+     js/app.js        application logic (Model-View-Controller)
+     js/vendor/       KaTeX 0.16.9, html2canvas 1.4.1, jsPDF 2.5.1
+     css/fonts/       KaTeX math fonts (woff2) -->
+<link rel="stylesheet" href="css/katex.min.css">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+
+<header class="appbar">
+  <h1>Worksheet Studio</h1>
+  <span>paste problems &rarr; typeset PDF</span>
+</header>
+
+<main>
+  <section class="input-panel" aria-label="Worksheet source">
+    <label class="field-label" for="src">Worksheet source</label>
+    <textarea id="src" spellcheck="false" aria-label="Paste your title and problems here">Worksheet #1: Quadratic Functions
+SAT Math Practice — Advanced Math Domain
+
+Problem 1. Solve for $x$: $x^2 - 5x + 6 = 0$.
+
+Problem 2. The function $f(x) = 2x^2 - 12x + 7$ is graphed in the $xy$-plane. What is the $x$-coordinate of the vertex of the parabola?
+
+Problem 3. A rectangle has an area of 48 square feet and its length is 2 feet more than its width.
+(a) Write a quadratic equation that models this situation.
+(b) Find the dimensions of the rectangle.
+
+Problem 4. For what value of $c$ does the equation $x^2 + 8x + c = 0$ have exactly **one** real solution?
+
+*Problem 5. (Challenge) The parabola $y = a(x-2)^2 - 3$ passes through the point $(4, 5)$. Find the value of $a$, then determine the $y$-intercept of the parabola.
+
+Answer Key
+1. $x = 2$ or $x = 3$
+2. $x = 3$
+3. (a) $w(w+2) = 48$ (b) width $= 6$ ft, length $= 8$ ft
+4. $c = 16$
+5. $a = 2$; $y$-intercept: $(0, 5)$</textarea>
+
+    <details class="help">
+      <summary>Input format</summary>
+      <pre>Line 1        &rarr; title
+Line 2        &rarr; subtitle (optional)
+Problem 1.    &rarr; starts a problem
+              (also: 1.  1)  Q1.  #1)
+*Problem 5.   &rarr; starred challenge problem
+(a) ... (b)   &rarr; lettered parts
+Answer Key    &rarr; everything after goes to
+                a boxed key on a new page
+Math goes in $...$ as usual.</pre>
+    </details>
+
+    <div class="controls">
+      <label class="field-label" for="spacing" style="margin:0">Workspace</label>
+      <select id="spacing" aria-label="Workspace below each problem">
+        <option value="0">None</option>
+        <option value="70">Compact</option>
+        <option value="120" selected>Standard</option>
+        <option value="185">Large</option>
+      </select>
+      <button id="generateBtn">Generate worksheet</button>
+      <button id="downloadBtn" disabled>Download PDF</button>
+    </div>
+    <div id="status" role="status"></div>
+  </section>
+
+  <section class="preview-panel" aria-label="Worksheet preview">
+    <div id="pages">
+      <p class="empty-note">Paste a title and problems on the left, then select <b>Generate worksheet</b> to preview the pages here.</p>
+    </div>
+  </section>
+</main>
+
+<div id="measure" aria-hidden="true"></div>
+
+
+<script src="js/vendor/katex.min.js"></script>
+<script src="js/vendor/html2canvas.min.js"></script>
+<script src="js/vendor/jspdf.umd.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
