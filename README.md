@@ -1,7 +1,5 @@
 # Worksheet Studio
 
-Webpage: https://homiejhan.github.io/pdfgenerator/
-
 A fully offline, single-purpose web app that turns plain text — the kind you'd
 paste straight out of a Claude (or any LLM) response — into a typeset,
 paginated PDF worksheet with an answer key. No server, no build step, no
@@ -64,6 +62,26 @@ studio-app/
 
 Double-click `index.html`, or serve the folder with any static file server.
 There is nothing to install and nothing to build.
+
+## Install on iPhone (offline home-screen app)
+
+The app is a PWA: it ships a `manifest.webmanifest` and a service worker
+(`sw.js`) that precaches every file on first visit, so once added to your
+home screen it opens and works with **no internet connection at all**.
+
+1. Host the folder over HTTPS — GitHub Pages works out of the box
+   (Settings → Pages → deploy from branch). Service workers require HTTPS;
+   this is a browser rule, not an app choice.
+2. Open the page once in Safari on your iPhone. The service worker installs
+   and caches all 32 app files (~1.2 MB) in the background.
+3. Tap **Share → Add to Home Screen**.
+4. From then on the icon launches the full app instantly, online or offline —
+   airplane mode included. Nothing is re-downloaded unless the app is updated.
+
+When you update the code, bump `CACHE_VERSION` at the top of `sw.js` (e.g.
+`v1` → `v2`) so returning devices fetch the new files; old caches are
+cleaned up automatically. If you add or remove files, add or remove them
+from the `ASSETS` list in `sw.js` as well.
 
 ---
 

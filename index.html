@@ -9,6 +9,13 @@
      js/app.js        application logic (Model-View-Controller)
      js/vendor/       KaTeX 0.16.9, html2canvas 1.4.1, jsPDF 2.5.1
      css/fonts/       KaTeX math fonts (woff2) -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#19468C">
+<!-- iOS home-screen (Add to Home Screen) support -->
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Worksheets">
 <link rel="stylesheet" href="css/katex.min.css">
 <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -86,5 +93,18 @@ Math goes in $...$ as usual.</pre>
 <script src="js/vendor/html2canvas.min.js"></script>
 <script src="js/vendor/jspdf.umd.min.js"></script>
 <script src="js/app.js"></script>
+<script>
+// Register the service worker so the app installs an offline cache.
+// Requires HTTPS (e.g. GitHub Pages) or localhost; skipped silently on
+// file:// where the browser doesn't allow service workers (the app still
+// works there because every asset is already a local file).
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => {
+      console.warn('Service worker registration failed:', err);
+    });
+  });
+}
+</script>
 </body>
 </html>
