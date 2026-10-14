@@ -6,6 +6,10 @@
 <title>Worksheet Studio</title>
 <!-- Fully local static app: no network access required.
      css/styles.css   presentation (all layout, paper, and UI styling)
+     js/core.js       shared helpers: inline math/markdown, expression
+                      compiler, picture (SVG + label) layout
+     js/graph.js      [graph] blocks: coordinate planes
+     js/figure.js     [figure] blocks: to-scale geometry diagrams
      js/app.js        application logic (Model-View-Controller)
      js/vendor/       KaTeX 0.16.9, html2canvas 1.4.1, jsPDF 2.5.1
      css/fonts/       KaTeX math fonts (woff2) -->
@@ -30,27 +34,83 @@
 <main>
   <section class="input-panel" aria-label="Worksheet source">
     <label class="field-label" for="src">Worksheet source</label>
-    <textarea id="src" spellcheck="false" aria-label="Paste your title and problems here">Worksheet #1: Quadratic Functions
-SAT Math Practice — Advanced Math Domain
+    <textarea id="src" spellcheck="false" aria-label="Paste your title and problems here">Worksheet #1: Linear Functions &amp; Geometry
+Graphs, figures, tables, and compact layouts
 
-Problem 1. Solve for $x$: $x^2 - 5x + 6 = 0$.
+[grid 4, space: compact]
+1. $x + 7 = 12$
+2. $3x = 21$
+3. $\frac{x}{4} = 5$
+4. $2x + 3 = 11$
+[/grid]
 
-Problem 2. The function $f(x) = 2x^2 - 12x + 7$ is graphed in the $xy$-plane. What is the $x$-coordinate of the vertex of the parabola?
+Problem 5. Complete the table of values for $y = 2x - 1$, then graph the line.
+| $x$ | $-1$ | $0$ | $1$ | $2$ |
+| $y$ |      |     |     |     |
+[graph]
+x: -5 to 5
+y: -5 to 5
+[/graph]
 
-Problem 3. A rectangle has an area of 48 square feet and its length is 2 feet more than its width.
-(a) Write a quadratic equation that models this situation.
-(b) Find the dimensions of the rectangle.
+Problem 6. Which graph shows the solutions of $y \le -x + 2$?
 
-Problem 4. For what value of $c$ does the equation $x^2 + 8x + c = 0$ have exactly **one** real solution?
+[graph]
+title: A)
+size: small
+x: -5 to 5
+y: -5 to 5
+y &lt;= -x + 2
+[/graph]
 
-*Problem 5. (Challenge) The parabola $y = a(x-2)^2 - 3$ passes through the point $(4, 5)$. Find the value of $a$, then determine the $y$-intercept of the parabola.
+[graph]
+title: B)
+size: small
+x: -5 to 5
+y: -5 to 5
+y &lt; -x + 2
+[/graph]
+
+[graph]
+title: C)
+size: small
+x: -5 to 5
+y: -5 to 5
+y &gt;= -x + 2
+[/graph]
+
+Problem 7. In triangle $ABC$, find the value of $x$.
+[figure]
+triangle ABC AB=8 angle A=50 angle B=60
+side AB 8 cm
+angle A 50°
+angle B 60°
+angle C $x^\circ$
+[/figure]
+
+*Problem 8. A gym charges a \$25 sign-up fee plus \$15 per month.
+| Months ($m$) | Total cost ($C$) |
+|:------------:|:----------------:|
+| 1            | \$40             |
+| 3            |                  |
+(a) Complete the table.
+(b) Write an equation for $C$ in terms of $m$.
 
 Answer Key
-1. $x = 2$ or $x = 3$
-2. $x = 3$
-3. (a) $w(w+2) = 48$ (b) width $= 6$ ft, length $= 8$ ft
-4. $c = 16$
-5. $a = 2$; $y$-intercept: $(0, 5)$</textarea>
+1. $x = 5$
+2. $x = 7$
+3. $x = 20$
+4. $x = 4$
+5. The $y$-values are $-3, -1, 1, 3$.
+[graph]
+size: small
+x: -5 to 5
+y: -5 to 5
+y = 2x - 1
+points (-1, -3) (0, -1) (1, 1) (2, 3)
+[/graph]
+6. A — the boundary is solid and the shading is below the line.
+7. $x = 180 - 50 - 60 = 70$
+8. (a) \$70 (b) $C = 25 + 15m$</textarea>
 
     <details class="help">
       <summary>Input format</summary>
@@ -62,16 +122,40 @@ Problem 1.    &rarr; starts a problem
 (a) ... (b)   &rarr; lettered parts
 Answer Key    &rarr; everything after goes to
                 a boxed key on a new page
-Math goes in $...$ as usual.</pre>
+Math goes in $...$; write \$ for currency.
+**bold** and *italic* may wrap $math$.
+
+[graph] ... [/graph]    coordinate plane
+  x: -5 to 5   y: 0 to 10   size: small
+  y = 2x - 3 [red, label: $f$]
+  y &lt;= -x + 2         shaded inequality
+  y = x + 3 for -3 &lt;= x &lt; 0   piecewise
+  point A (1, 2)   segment P(0,0) to Q(3,4)
+  polygon A(1,1) B(4,1) C(4,3)   circle (0,0) radius 3
+
+[figure] ... [/figure]  to-scale geometry
+  triangle ABC AB=8 angle A=50 angle B=60
+  right triangle PQR legs 6 8
+  parallelogram ABCD base 7 side 4 angle 65
+  side AB 8 cm [ticks: 1]   angle C measure
+  right angle DEA   point E foot D A B
+
+| $x$ | 1 | 2 |       table (a |---| row
+| $y$ |   |   |       under row 1 = header)
+
+[grid 4] ... [/grid]          4-across drill grid
+[columns 2] ... [/columns]    newspaper columns
+
+Full reference: README.md</pre>
     </details>
 
     <div class="controls">
       <label class="field-label" for="spacing" style="margin:0">Workspace</label>
       <select id="spacing" aria-label="Workspace below each problem">
-        <option value="0">None</option>
-        <option value="70">Compact</option>
-        <option value="120" selected>Standard</option>
-        <option value="185">Large</option>
+        <option value="none">None</option>
+        <option value="compact">Compact</option>
+        <option value="standard" selected>Standard</option>
+        <option value="large">Large</option>
       </select>
       <button id="generateBtn">Generate worksheet</button>
       <button id="downloadBtn" disabled>Download PDF</button>
@@ -92,6 +176,9 @@ Math goes in $...$ as usual.</pre>
 <script src="js/vendor/katex.min.js"></script>
 <script src="js/vendor/html2canvas.min.js"></script>
 <script src="js/vendor/jspdf.umd.min.js"></script>
+<script src="js/core.js"></script>
+<script src="js/graph.js"></script>
+<script src="js/figure.js"></script>
 <script src="js/app.js"></script>
 <script>
 // Register the service worker so the app installs an offline cache.

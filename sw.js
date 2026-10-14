@@ -9,7 +9,7 @@
  */
 'use strict';
 
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const CACHE_NAME = 'worksheet-studio-' + CACHE_VERSION;
 
 const ASSETS = [
@@ -41,6 +41,9 @@ const ASSETS = [
   './css/fonts/KaTeX_Size3-Regular.woff2',
   './css/fonts/KaTeX_Size4-Regular.woff2',
   './css/fonts/KaTeX_Typewriter-Regular.woff2',
+  './js/core.js',
+  './js/graph.js',
+  './js/figure.js',
   './js/app.js',
   './js/vendor/html2canvas.min.js',
   './js/vendor/jspdf.umd.min.js',

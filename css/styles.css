@@ -7,6 +7,11 @@
     --line: #C9D0DA;
     --text: #232A33;
     --muted: #6B7482;
+    --gold: #B8892B;           /* challenge-problem star */
+    --gridline: #98ACCB;       /* [grid] cell borders (navy 45%) */
+    --tableline: #809AC0;      /* table rules (navy 55%) */
+    --colrule: #BAC8DD;        /* [columns] divider (navy 30%) */
+    --boxbg: #F2F5FB;
   }
   * { box-sizing: border-box; margin: 0; }
   html, body { height: 100%; }
@@ -69,6 +74,7 @@
     font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace; font-size: 11.5px;
     background: #fff; border: 1px solid var(--line); border-radius: 4px;
     padding: 10px; margin-top: 6px; white-space: pre-wrap;
+    max-height: 34vh; overflow: auto;
   }
 
   /* ---------- paper: fixed US-Letter pages (816 x 1056 px @ 96dpi) ---------- */
@@ -99,19 +105,76 @@
   .ws-namedate { display: flex; justify-content: space-between; font-size: .85em; margin-top: 4px; }
   .ws-namedate .blank { display: inline-block; border-bottom: 1px solid #111; }
 
-  .problem { padding-bottom: 12px; }
+  .problem { padding-bottom: 12px; display: flow-root; }
   .problem-head { font-weight: 700; color: var(--ink); }
-  .star { color: var(--ink); }
+  .star { color: var(--gold); }
   .problem p { margin: 0 0 6px; }
-  .parts { margin: 4px 0 0 30px; padding: 0; }
-  .parts li { margin-bottom: 4px; }
+  .parts { margin: 2px 0 6px; }
+  .part { display: flex; align-items: baseline; margin-bottom: 4px; }
+  .part-label { flex: 0 0 auto; min-width: 1.75em; margin-right: .35em; }
+  .part-body { flex: 1 1 auto; min-width: 0; }
   .workspace { display: block; }
 
   .ak-title { text-align: center; font-size: 1.5em; font-weight: 700; color: var(--ink); margin-bottom: 16px; }
-  .ak-box { border: 1.4px solid var(--ink); border-radius: 6px; background: #F2F5FB; padding: 14px 20px; margin-bottom: 12px; }
-  .ak-item { display: flex; gap: 10px; padding: 4px 0; }
-  .ak-num { font-weight: 700; flex-shrink: 0; }
+  .ak-box { border: 1.4px solid var(--ink); border-radius: 6px; background: var(--boxbg); padding: 14px 20px; margin-bottom: 12px; }
+  .ak-item { display: flex; align-items: baseline; gap: 10px; padding: 4px 0; }
+  .ak-item.top, .ws-citem.top { align-items: flex-start; }
+  .ak-num { font-weight: 700; color: var(--ink); flex-shrink: 0; }
+  .ak-body { flex: 1 1 auto; min-width: 0; }
   .ak-item p { margin: 0 0 4px; }
+
+  /* ---------- tables: | pipe | rows ---------- */
+  .ws-tablewrap { display: flex; justify-content: center; margin: 10px 0 12px; }
+  .ws-table { border-collapse: collapse; font-size: 15.5px; }
+  .ws-table.ws-fit { width: max-content; }
+  .ws-table.wide { width: 100%; }
+  .ws-table th, .ws-table td {
+    border: 1px solid var(--tableline); padding: .28em .6em; line-height: 1.45;
+    white-space: nowrap; vertical-align: middle;
+  }
+  .ws-table th { background: var(--boxbg); color: var(--ink); font-weight: 700; }
+  .ws-table.wide th:not(.wrap), .ws-table.wide td:not(.wrap) { width: 1%; }
+  .ws-table .wrap { white-space: normal; }
+  .ws-table td.blank { min-width: 3.5em; height: 1.95em; }
+
+  /* ---------- graphs and figures: SVG drawing + HTML labels ---------- */
+  .ws-pics {
+    display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
+    column-gap: 1em; row-gap: 18px; margin: 10px 0 12px;
+  }
+  .ws-pic { position: relative; flex: 0 0 auto; }
+  .ws-pic-canvas { position: absolute; left: 0; top: 0; }
+  .ws-svgbox { position: absolute; line-height: 0; }
+  .ws-svgbox svg { display: block; }
+  .ws-lbl {
+    position: absolute; left: 0; top: 0; width: max-content; white-space: nowrap;
+    font-family: 'KaTeX_Main', 'Georgia', serif; line-height: 1.12; color: #000;
+  }
+  .ws-lbl .katex { font-size: 1em; }
+
+  /* ---------- compact layouts: [grid N] and [columns N] ---------- */
+  .ws-citem { display: flex; align-items: baseline; }
+  .ws-cnum { flex: 0 0 auto; min-width: 1.35em; margin-right: .4em; text-align: right; font-weight: 700; color: var(--ink); }
+  .ws-cbody { flex: 1 1 auto; min-width: 0; }
+  .ws-cbody > p { margin: 0 0 6px; }
+  .ws-cbody > p:last-child { margin-bottom: 0; }
+
+  .ws-gridblock { display: flow-root; }
+  .ws-gridblock.first { padding-top: 2px; }
+  .ws-gridblock.last { padding-bottom: 14px; }
+  .ws-grow { display: flex; }
+  .ws-gcell { flex: 0 0 auto; min-width: 0; padding: 6px 8px 6px; }
+  .ws-grow.tight .ws-gcell { padding: 0 8px 8px; }
+  .ws-grow.boxed .ws-gcell { border: 1px solid var(--gridline); border-top: none; }
+  .ws-grow.boxed .ws-gcell + .ws-gcell { margin-left: -1px; }
+  .ws-gridblock.first .ws-grow.boxed .ws-gcell,
+  .ws-gridblock.page-first .ws-grow.boxed .ws-gcell { border-top: 1px solid var(--gridline); }
+
+  .ws-cols { display: flex; padding-bottom: 14px; }
+  .ws-col { flex: 1 1 0; min-width: 0; }
+  .ws-col + .ws-col { margin-left: 12px; padding-left: 12px; border-left: 1px solid transparent; }
+  .ws-cols.rule .ws-col + .ws-col { border-left-color: var(--colrule); }
+  .ws-colitem { display: flow-root; padding-bottom: 10px; }
 
   /* offscreen measuring surface: real layout, never captured */
   #measure {
